@@ -18,21 +18,26 @@ public class NatoGame {
 
     public void play() {
         Scanner input = new Scanner(System.in);
-        int rounds = 5;
-        int points = 0;
-        System.out.println("Guess the NATO Phonetic word for the letter shown.");
         NatoAlphabet natoWord = new NatoAlphabet();
+        int points = 0;
+        int rounds = 5;
+        boolean playTest = false;
+        System.out.println("Do you want to run the test? (All letters) (y/[N])");
+        String playInput = input.nextLine();
+        if (playInput.equalsIgnoreCase("y") || playInput.equalsIgnoreCase("yes")) {
+            playTest = true;
+            rounds = 26;
+        }
+        System.out.println("Guess the NATO Phonetic word for the letter shown.");
         for (int i = 0; i < rounds; i++) {
-            natoWord.getNewNatoWord();
+            natoWord.getNewNatoWord(playTest);
             System.out.println("The letter is: " + natoWord.getCurrentLetter());
             long timeStart = System.currentTimeMillis();
             String guess = input.nextLine();
             long timeStop = System.currentTimeMillis();
             boolean result = natoWord.checkGuess(guess);
             if (result) {
-                // TODO: figure out how to make more accurate time based scoring
-                // points added for buffer time before and after input.nextLine()
-                // Unsure of how to measure time accurately for an input
+                // A guess within 2.5 seconds is worth full points
                 long pointsForRound = MAX_POINTS - (timeStop - timeStart) + 2500;
                 if (pointsForRound > 0) {
                     if (pointsForRound > MAX_POINTS) {
@@ -49,7 +54,7 @@ public class NatoGame {
             }
         }
 
-        System.out.println("Your score for the round was " + points);
+        System.out.println(String.format("Your score for the round was %d/%d", points, rounds * MAX_POINTS));
         scoreboard.addScore(points, rounds * MAX_POINTS);
     }
 

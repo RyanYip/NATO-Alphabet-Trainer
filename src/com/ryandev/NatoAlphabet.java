@@ -1,8 +1,6 @@
 package com.ryandev;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Ryan on 2017-03-21.
@@ -10,42 +8,53 @@ import java.util.Random;
 public class NatoAlphabet {
 
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static Map<Character, String> NATO_ALPHABET = new HashMap<>();
+    private static Map<Character, String> NATO_ALPHABET = new HashMap<Character, String>() {{
+        put('A', "Alfa");
+        put('B', "Bravo");
+        put('C', "Charlie");
+        put('D', "Delta");
+        put('E', "Echo");
+        put('F', "Foxtrot");
+        put('G', "Golf");
+        put('H', "Hotel");
+        put('I', "India");
+        put('J', "Juliett");
+        put('K', "Kilo");
+        put('L', "Lima");
+        put('M', "Mike");
+        put('N', "November");
+        put('O', "Oscar");
+        put('P', "Papa");
+        put('Q', "Quebec");
+        put('R', "Romeo");
+        put('S', "Sierra");
+        put('T', "Tango");
+        put('U', "Uniform");
+        put('V', "Victor");
+        put('W', "Whiskey");
+        put('X', "Xray");
+        put('Y', "Yankee");
+        put('Z', "Zulu");
+    }};
+    private ArrayList<Character> alphabetTestArray = new ArrayList<>();
     private char currentLetter;
     private String currentNatoWord;
 
     public NatoAlphabet() {
-        NATO_ALPHABET.put('A', "Alfa");
-        NATO_ALPHABET.put('B', "Bravo");
-        NATO_ALPHABET.put('C', "Charlie");
-        NATO_ALPHABET.put('D', "Delta");
-        NATO_ALPHABET.put('E', "Echo");
-        NATO_ALPHABET.put('F', "Foxtrot");
-        NATO_ALPHABET.put('G', "Golf");
-        NATO_ALPHABET.put('H', "Hotel");
-        NATO_ALPHABET.put('I', "India");
-        NATO_ALPHABET.put('J', "Juliett");
-        NATO_ALPHABET.put('K', "Kilo");
-        NATO_ALPHABET.put('L', "Lima");
-        NATO_ALPHABET.put('M', "Mike");
-        NATO_ALPHABET.put('N', "November");
-        NATO_ALPHABET.put('O', "Oscar");
-        NATO_ALPHABET.put('P', "Papa");
-        NATO_ALPHABET.put('Q', "Quebec");
-        NATO_ALPHABET.put('R', "Romeo");
-        NATO_ALPHABET.put('S', "Sierra");
-        NATO_ALPHABET.put('T', "Tango");
-        NATO_ALPHABET.put('U', "Uniform");
-        NATO_ALPHABET.put('V', "Victor");
-        NATO_ALPHABET.put('W', "Whiskey");
-        NATO_ALPHABET.put('X', "Xray");
-        NATO_ALPHABET.put('Y', "Yankee");
-        NATO_ALPHABET.put('Z', "Zulu");
+        for (int i = 0; i < ALPHABET.length(); i++) {
+            alphabetTestArray.add(ALPHABET.charAt(i));
+        }
     }
 
-    public void getNewNatoWord(){
+    public void getNewNatoWord(boolean test){
         Random r = new Random();
-        setCurrentLetter(ALPHABET.charAt(r.nextInt(ALPHABET.length())));
+        if (test == true) {
+            int indextToRemove = r.nextInt(alphabetTestArray.size());
+            setCurrentLetter(alphabetTestArray.get(indextToRemove));
+            alphabetTestArray.remove(indextToRemove);
+        } else {
+            setCurrentLetter(ALPHABET.charAt(r.nextInt(ALPHABET.length())));
+        }
         setCurrentNatoWord(NATO_ALPHABET.get(currentLetter));
     }
 
