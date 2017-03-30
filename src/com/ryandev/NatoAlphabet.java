@@ -73,8 +73,4 @@ public class NatoAlphabet {
     private void setCurrentNatoWord(String natoWord) {
         currentNatoWord = natoWord;
     }
-
-    public boolean checkGuess(String guess) {
-        return currentNatoWord.equalsIgnoreCase(guess);
-    }
 }
