@@ -46,9 +46,9 @@ public class NatoAlphabet {
         }
     }
 
-    public void getNewNatoWord(boolean test){
+    public void getNewNatoWord(boolean isTest){
         Random r = new Random();
-        if (test == true) {
+        if (isTest == true) {
             int indextToRemove = r.nextInt(alphabetTestArray.size());
             setCurrentLetter(alphabetTestArray.get(indextToRemove));
             alphabetTestArray.remove(indextToRemove);
@@ -56,6 +56,10 @@ public class NatoAlphabet {
             setCurrentLetter(ALPHABET.charAt(r.nextInt(ALPHABET.length())));
         }
         setCurrentNatoWord(NATO_ALPHABET.get(currentLetter));
+    }
+
+    public String getWordForLetter(Character letter) {
+        return NATO_ALPHABET.get(letter);
     }
 
     public String getCurrentLetter(){

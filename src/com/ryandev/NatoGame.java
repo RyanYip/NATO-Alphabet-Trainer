@@ -18,26 +18,34 @@ public class NatoGame {
         this.scoreboard = new Scoreboard();
     }
 
-    public void play() {
+    public void play(int gameMode) {
         Scanner input = new Scanner(System.in);
-        NatoAlphabet natoWord = new NatoAlphabet();
-        int points = 0;
-        int rounds = 5;
         boolean isTest = false;
-        System.out.println("Do you want to run the test? (All letters) (y/[N])");
-        String testInput = input.nextLine();
-        if (testInput.equalsIgnoreCase("y") || testInput.equalsIgnoreCase("yes")) {
-            isTest = true;
+        int rounds = 0;
+        if (gameMode == 1) {
+            // info mode
+            runPractice();
+            return;
+        } else if (gameMode == 2) {
+            // 5 round practice mode with random letters
+            rounds = 5;
+        } else if (gameMode == 3) {
+            // 26 round test of all letters
             rounds = 26;
+            isTest = true;
+        } else {
+            System.out.println("ERROR: Invalid game mode");
         }
         System.out.println("Guess the NATO Phonetic word for the letter shown.");
+        NatoAlphabet natoAlphabet = new NatoAlphabet();
+        int points = 0;
         for (int i = 0; i < rounds; i++) {
-            natoWord.getNewNatoWord(isTest);
-            System.out.println("The letter is: " + natoWord.getCurrentLetter());
+            natoAlphabet.getNewNatoWord(isTest);
+            System.out.println("The letter is: " + natoAlphabet.getCurrentLetter());
             long timeStart = System.currentTimeMillis();
             String guess = input.nextLine();
             long timeStop = System.currentTimeMillis();
-            int spellingCorrectness = levenshteinDistance(guess, natoWord.getCurrentNatoWord());
+            int spellingCorrectness = levenshteinDistance(guess, natoAlphabet.getCurrentNatoWord());
             // A guess within 2.5 seconds is worth full points
             long pointsForRound = MAX_POINTS - (timeStop - timeStart) + 2500;
             if (pointsForRound > MAX_POINTS) {
@@ -50,7 +58,7 @@ public class NatoGame {
             }
             points += pointsForRound;
             if (spellingCorrectness > 0) {
-                System.out.println("The correct answer is " + natoWord.getCurrentNatoWord());
+                System.out.println("The correct answer is " + natoAlphabet.getCurrentNatoWord());
             } else {
                 System.out.println("Correct!");
             }
@@ -59,6 +67,29 @@ public class NatoGame {
 
         System.out.println(String.format("Your score for the round was %d/%d", points, rounds * MAX_POINTS));
         scoreboard.addScore(points, rounds * MAX_POINTS);
+    }
+
+    private void runPractice() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter a letter to see what the corresponding Nato Phonetic Word is. Type 'exit' to quit");
+        NatoAlphabet natoAlphabet = new NatoAlphabet();
+        boolean playAgain = true;
+        while (playAgain) {
+            String command = input.nextLine().toUpperCase();
+            if (command.length() == 1) {
+                String natoWord = natoAlphabet.getWordForLetter(command.charAt(0));
+                if (natoWord != null) {
+                    System.out.println(natoWord);
+                } else {
+                    System.out.println("Not a valid letter");
+                }
+            } else if (command.equalsIgnoreCase("exit")) {
+                playAgain = false;
+            } else {
+                System.out.println("Not a valid letter");
+            }
+
+        }
     }
 
     public List<Score> endGame() {
